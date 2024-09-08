@@ -518,7 +518,7 @@ public class RuntimeResourcePackImpl implements RuntimeResourcePack, ResourcePac
 	}
 	
 	private static Identifier fix(Identifier identifier, String prefix, String append) {
-		return new Identifier(identifier.getNamespace(), prefix + '/' + identifier.getPath() + '.' + append);
+		return Identifier.of(identifier.getNamespace(), prefix + '/' + identifier.getPath() + '.' + append);
 	}
 	
 	protected byte[] read(ZipEntry entry, InputStream stream) throws IOException {
@@ -533,7 +533,7 @@ public class RuntimeResourcePackImpl implements RuntimeResourcePack, ResourcePac
 		int sep = fullPath.indexOf('/');
 		String namespace = fullPath.substring(0, sep);
 		String path = fullPath.substring(sep + 1);
-		map.put(new Identifier(namespace, path), () -> data);
+		map.put(Identifier.of(namespace, path), () -> data);
 	}
 	
 	private void lock() {

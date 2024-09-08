@@ -9,6 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -45,6 +49,12 @@ public class JLang implements Cloneable {
     private <T> JLang object(Registry<T> registry, String str, T t, String name) {
         return this.object(str,
                 Objects.requireNonNull(registry.getId(t), "register your item before calling this"),
+                name);
+    }
+
+    private <T> JLang object(RegistryKey<T> registryKey, String str, String name) {
+        return this.object(str,
+                Objects.requireNonNull(registryKey.getRegistry(), "register your item before calling this"),
                 name);
     }
 
@@ -120,7 +130,9 @@ public class JLang implements Cloneable {
      * adds a translation key for an entity, respects {@link Enchantment#getTranslationKey()}
      */
     public JLang enchantmentRespect(Enchantment enchantment, String name) {
-        this.lang.put(enchantment.getTranslationKey(), name);
+        if (enchantment.description().getContent() instanceof TranslatableTextContent) {
+            this.lang.put(((TranslatableTextContent) enchantment.description().getContent()).getKey(), name);
+        }
         return this;
     }
 
@@ -128,8 +140,16 @@ public class JLang implements Cloneable {
      * @see JLang#enchantmentRespect(Enchantment, String) uses the {@link Enchantment#getTranslationKey()}}
      */
     @Deprecated
+    public JLang enchantment(RegistryKey<Enchantment> registryKey, String name) {
+        return this.object(registryKey, "enchantment", name);
+    }
+
+    /**
+     * @see JLang#enchantmentRespect(Enchantment, String) uses the {@link Enchantment#getTranslationKey()}}
+     */
+    @Deprecated
     public JLang enchantment(Enchantment enchantment, String name) {
-        return this.object(Registries.ENCHANTMENT, "enchantment", enchantment, name);
+        return enchantment(RegistryEntry.of(enchantment).getKey().get(), name);
     }
 
     public JLang item(Identifier item, String name) {

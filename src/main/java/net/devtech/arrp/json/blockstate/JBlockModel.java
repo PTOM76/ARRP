@@ -11,7 +11,7 @@ public class JBlockModel implements Cloneable {
 
 	@Deprecated
 	public JBlockModel(String model) {
-		this(new Identifier(model));
+		this(Identifier.of(model));
 	}
 
 	/**

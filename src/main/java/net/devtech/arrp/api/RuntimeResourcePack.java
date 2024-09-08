@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.concurrent.Future;
 import java.util.function.BiFunction;
@@ -24,9 +23,7 @@ import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.recipe.JRecipe;
 import net.devtech.arrp.json.tags.JTag;
 import net.devtech.arrp.util.CallableFunction;
-import org.jetbrains.annotations.ApiStatus;
 
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.ResourcePack;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
@@ -42,11 +39,11 @@ public interface RuntimeResourcePack extends ResourcePack {
 	 * create a new runtime resource pack with the default supported resource pack version
 	 */
 	static RuntimeResourcePack create(String id) {
-		return new RuntimeResourcePackImpl(new Identifier(id));
+		return new RuntimeResourcePackImpl(Identifier.of(id));
 	}
 
 	static RuntimeResourcePack create(String id, int version) {
-		return new RuntimeResourcePackImpl(new Identifier(id), version);
+		return new RuntimeResourcePackImpl(Identifier.of(id), version);
 	}
 
 	static RuntimeResourcePack create(Identifier id) {
@@ -57,9 +54,9 @@ public interface RuntimeResourcePack extends ResourcePack {
 		return new RuntimeResourcePackImpl(id, version);
 	}
 
-	static Identifier id(String string) {return new Identifier(string);}
+	static Identifier id(String string) {return Identifier.of(string);}
 
-	static Identifier id(String namespace, String string) {return new Identifier(namespace, string);}
+	static Identifier id(String namespace, String string) {return Identifier.of(namespace, string);}
 
 
 	/**

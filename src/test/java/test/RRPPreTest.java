@@ -33,7 +33,7 @@ import java.nio.file.Path;
 public class RRPPreTest {
 	public static void main(String[] args) {
 		RuntimeResourcePack pack = RuntimeResourcePack.create("test:test");
-		pack.addLang(new Identifier("aaaa:aaaa"), new JLang().entry("aaaa", "bbbbb"));
+		pack.addLang(Identifier.of("aaaa:aaaa"), new JLang().entry("aaaa", "bbbbb"));
 		pack.dumpDirect(Path.of("aaaa"));
 
 		JState iron_block = state(variant(JState.model("block/iron_block")));
@@ -63,7 +63,7 @@ public class RRPPreTest {
 		                             .setPrettyPrinting()
 		                             .create();
 
-		JLang lang = JLang.lang().allPotionOf(new Identifier("mod_id", "potion_id"), "Example");
+		JLang lang = JLang.lang().allPotionOf(Identifier.of("mod_id", "potion_id"), "Example");
 
 		System.out.println(RuntimeResourcePackImpl.GSON.toJson(loot("minecraft:block").pool(pool().rolls(1)
                                                                                                   .entry(entry().type("minecraft:item").name("minecraft:diamond"))
